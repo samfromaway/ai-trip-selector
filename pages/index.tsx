@@ -176,7 +176,7 @@ export default function Home() {
           onClick={handleButtonClick}
           style={{ padding: '10px 10px 10px 10px', borderRadius: '8px' }}
         >
-          Send
+          Get trip
         </button>
         {queryState === 'error' && <p>Error...</p>}
         {queryState === 'loading' && <p>Loading...</p>}
@@ -197,6 +197,14 @@ export default function Home() {
                       Distance to next place:
                     </span>{' '}
                     {e.distanceToNext}
+                  </p>
+                  <p>
+                    <span
+                      style={{ color: 'grey', textTransform: 'capitalize' }}
+                    >
+                      Travel Type:
+                    </span>{' '}
+                    {e.bestWayToTravel}
                   </p>
                   <p>
                     <span style={{ color: 'grey' }}>Description:</span>{' '}

@@ -2,6 +2,7 @@ export type ItineraryItem = {
   name: string;
   description: string;
   distanceToNext: string;
+  bestWayToTravel: string;
 };
 type TripResponse = {
   tripDescription: string;

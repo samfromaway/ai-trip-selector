@@ -22,7 +22,7 @@ Our client wants to travel in a ${travelStyle} manner.
 Create a numbered itinerary for ${duration} days, with a convincing description less than 40 words in the "you" form.
 The destinations should be ordered by distance apart from each other.
 Then format your result like this:
-DayNr: City name (distance to next city in the itinerary in kilo meters) - description |.
+DayNr: City name (distance to next city in the itinerary in kilo meters)[best way to travel] - description |.
 
 then summarize the itinerary in a convincing enthusiastic text with less than 60 words.
 Prefix the itinerary-text with "Description" and add it to the end of the text.
@@ -42,10 +42,21 @@ const makeItinerary = (itineraryResponse: string) => {
   const result = itineraryResponse.split('-');
 
   const nameResult = result?.[0]?.trim();
-  const name = nameResult.split('(')?.[0];
-  const distanceToNext = nameResult.split('(')?.[1]?.replace(')', '');
+  const name = nameResult.split('(')?.[0]?.split('[')?.[0];
+  const distanceToNext = nameResult
+    .split('(')?.[1]
+    ?.replace(')', '')
+    ?.trim()
+    ?.split('[')?.[0]
+    ?.trim();
+  const bestWayToTravel = nameResult.split('[')?.[1]?.replace(']', '')?.trim();
 
-  return { name, description: result?.[1]?.trim(), distanceToNext };
+  return {
+    name,
+    description: result?.[1]?.trim(),
+    distanceToNext,
+    bestWayToTravel,
+  };
 };
 
 export default async function handler(
