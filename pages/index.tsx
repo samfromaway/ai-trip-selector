@@ -7,19 +7,24 @@ const Dropdown = ({
   options,
   value,
   onChange,
+  label,
 }: {
   options: string[];
   value: string;
+  label: string;
   onChange;
 }) => {
   return (
-    <select value={value} onChange={onChange}>
-      {options.map((e) => (
-        <option value={e} key={e}>
-          {e}
-        </option>
-      ))}
-    </select>
+    <label>
+      {label}
+      <select value={value} onChange={onChange}>
+        {options.map((e) => (
+          <option value={e} key={e}>
+            {e}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 };
 
@@ -39,6 +44,10 @@ export default function Home() {
   >('none');
 
   const handleButtonClick = async () => {
+    if (!country || !travelStyle || !duration || !age) {
+      alert('fill out all fields');
+      return;
+    }
     setQueryState('loading');
     const res = await getTrip({ country, travelStyle, age, duration });
     if (res) {
@@ -75,16 +84,18 @@ export default function Home() {
         </label>
         <Spacer />
         <Dropdown
-          options={['italy', 'china']}
+          options={['', 'italy', 'china']}
           value={country}
           onChange={(e) => setCountry(e.target.value)}
+          label="Country"
         />
         <Spacer />
 
         <Dropdown
-          options={['active', 'comfort']}
+          options={['', 'active', 'comfort']}
           value={travelStyle}
           onChange={(e) => setTravelStyle(e.target.value)}
+          label="travel style"
         />
         <Spacer />
         <button onClick={handleButtonClick}>Send</button>
@@ -92,14 +103,14 @@ export default function Home() {
         {queryState === 'success' && (
           <div>
             <div>
-              <h3>Trip Description</h3>
+              <h2>Trip Description</h2>
               <p>{tripDescription}</p>
             </div>
             <div>
               <h3>Itinerary</h3>
               {itinerary.map((e) => (
                 <div key={e.name}>
-                  <h3>{e.name}</h3>
+                  <h4>{e.name}</h4>
                   <p>{e.description}</p>
                 </div>
               ))}
