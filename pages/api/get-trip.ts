@@ -40,7 +40,12 @@ const formatTextResponse = (formatTextResponse: string) => {
 
 const makeItinerary = (itineraryResponse: string) => {
   const result = itineraryResponse.split('-');
-  return { name: result?.[0]?.trim(), description: result?.[1]?.trim() };
+
+  const nameResult = result?.[0]?.trim();
+  const name = nameResult.split('(')?.[0];
+  const distanceToNext = nameResult.split('(')?.[1]?.replace(')', '');
+
+  return { name, description: result?.[1]?.trim(), distanceToNext };
 };
 
 export default async function handler(

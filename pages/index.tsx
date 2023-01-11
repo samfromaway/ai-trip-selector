@@ -192,7 +192,16 @@ export default function Home() {
               {itinerary.map((e) => (
                 <div key={e.name}>
                   <h6>{e.name}</h6>
-                  <p>{e.description}</p>
+                  <p>
+                    <span style={{ color: 'grey' }}>
+                      Distance to next place:
+                    </span>{' '}
+                    {e.distanceToNext}
+                  </p>
+                  <p>
+                    <span style={{ color: 'grey' }}>Description:</span>{' '}
+                    {e.description}
+                  </p>
                   <div style={{ padding: 8 }} />
                 </div>
               ))}

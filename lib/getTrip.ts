@@ -1,4 +1,8 @@
-export type ItineraryItem = { name: string; description: string };
+export type ItineraryItem = {
+  name: string;
+  description: string;
+  distanceToNext: string;
+};
 type TripResponse = {
   tripDescription: string;
   itinerary: ItineraryItem[];
