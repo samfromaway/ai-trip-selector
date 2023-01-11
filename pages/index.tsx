@@ -3,7 +3,16 @@ import { useState } from 'react';
 import { getTrip, ItineraryItem } from '../lib/getTrip';
 import styles from '../styles/Home.module.css';
 
-const countryOptions = ['', 'Italy', 'China', 'Peru', 'Colombia'];
+const countryOptions = [
+  '',
+  'Italy',
+  'China',
+  'Peru',
+  'Colombia',
+  'Ecuador',
+  'Galapagos',
+  'Antarctica',
+];
 const travelStyleOptions = ['', 'Active', 'Comfort'];
 
 const Dropdown = ({
@@ -160,7 +169,7 @@ export default function Home() {
           options={countryOptions}
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          label="Country"
+          label="Destination"
         />
         <Spacer />
 
