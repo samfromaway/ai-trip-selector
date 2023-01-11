@@ -15,16 +15,64 @@ const Dropdown = ({
   onChange;
 }) => {
   return (
-    <label>
-      {label}
-      <select value={value} onChange={onChange}>
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
+      <label htmlFor={label}>{label}</label>
+      <select
+        id={label}
+        value={value}
+        onChange={onChange}
+        style={{
+          display: 'block',
+          padding: '10px 12px 10px 12px',
+          borderRadius: '8px',
+          border: 'none',
+          width: '100%',
+        }}
+      >
         {options.map((e) => (
           <option value={e} key={e}>
             {e}
           </option>
         ))}
       </select>
-    </label>
+    </div>
+  );
+};
+
+const Input = ({
+  value,
+  onChange,
+  label,
+}: {
+  value: string;
+  onChange;
+  label: string;
+}) => {
+  return (
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
+      <label htmlFor={label}>{label}</label>
+      <div style={{ padding: 3 }} />
+      <input
+        id={label}
+        value={value}
+        onChange={onChange}
+        style={{
+          display: 'block',
+          padding: '10px 12px 10px 12px',
+          borderRadius: '8px',
+          border: 'none',
+          width: '100%',
+        }}
+      />
+    </div>
   );
 };
 
@@ -67,21 +115,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main className={styles.main} style={{ maxWidth: 400, margin: 'auto' }}>
         <h1 className={styles.title}>Choose a trip</h1>
         <Spacer />
-        <label>
-          Age
-          <input value={age} onChange={(e) => setAge(e.target.value)} />
-        </label>
+        <Input
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          label={'Age'}
+        />
+
         <Spacer />
-        <label>
-          Duration of trip
-          <input
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-          />
-        </label>
+        <Input
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+          label={'Duration of trip'}
+        />
+
         <Spacer />
         <Dropdown
           options={['', 'italy', 'china']}
@@ -95,10 +144,16 @@ export default function Home() {
           options={['', 'active', 'comfort']}
           value={travelStyle}
           onChange={(e) => setTravelStyle(e.target.value)}
-          label="travel style"
+          label="Travel Style"
         />
         <Spacer />
-        <button onClick={handleButtonClick}>Send</button>
+        <Spacer />
+        <button
+          onClick={handleButtonClick}
+          style={{ padding: '10px 10px 10px 10px', borderRadius: '8px' }}
+        >
+          Send
+        </button>
         {queryState === 'loading' && <p>Loading...</p>}
         {queryState === 'success' && (
           <div>
