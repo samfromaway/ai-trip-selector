@@ -11,6 +11,39 @@ a {
   text-decoration: none;
 }
 
+p {
+  font-size: 20px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+h4 {
+  font-size: 24px;
+  margin: 0;
+}
+
+h5 {
+  font-size: 22px;
+  margin: 0;
+}
+
+h6 {
+  font-size: 20px;
+  margin: 0;
+}
+
+label {
+  font-size: 20px;
+}
+
+input {
+  font-size: 20px;
+}
+
+select {
+  font-size: 20px;
+}
+
 * {
   box-sizing: border-box;
 }

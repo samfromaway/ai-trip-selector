@@ -1,10 +1,8 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { Configuration, OpenAIApi } from 'openai';
 
-export type ItineraryItem = { name: string; description: string };
-type TripResponse = { tripDescription: string; itinerary: ItineraryItem[] };
-
 const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: process.env.API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -44,24 +42,35 @@ const makeItinerary = (itineraryResponse: string) => {
   return { name: result?.[0]?.trim(), description: result?.[1]?.trim() };
 };
 
-export async function getTrip({
-  country,
-  travelStyle,
-  age,
-  duration,
-}: {
-  country: string;
-  travelStyle: string;
-  age: string;
-  duration: string;
-}): Promise<TripResponse> {
-  const res = await fetch(
-    `http://localhost:3000/api/get-trip?country=${country}&travelStyle=${travelStyle}&age=${age}&duration=${duration}`
-  );
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { country, travelStyle, age, duration } = req.query;
+  if (typeof country !== 'string') return;
+  if (typeof age !== 'string') return;
+  if (typeof travelStyle !== 'string') return;
+  if (typeof duration !== 'string') return;
 
-  const data = await res.json();
-  return {
-    tripDescription: data?.tripDescription,
-    itinerary: data?.itinerary,
-  };
+  const completion = await openai.createCompletion({
+    model: 'text-davinci-003',
+    max_tokens: 200,
+    prompt: makePromt({
+      country,
+      travelStyle,
+      age,
+      duration,
+    }),
+  });
+  const textResponse = completion.data.choices[0].text;
+
+  const text = formatTextResponse(textResponse);
+
+  const itinerary = text?.itineraryArray.map((e) => makeItinerary(e));
+  const cleaneditinerary = itinerary.filter((e) => !!e.name);
+
+  res.status(200).json({
+    tripDescription: text?.description,
+    itinerary: cleaneditinerary,
+  });
 }

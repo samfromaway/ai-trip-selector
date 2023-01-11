@@ -21,6 +21,7 @@ const Dropdown = ({
       }}
     >
       <label htmlFor={label}>{label}</label>
+      <div style={{ padding: 3 }} />
       <select
         id={label}
         value={value}
@@ -115,7 +116,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main} style={{ maxWidth: 400, margin: 'auto' }}>
+      <main className={styles.main} style={{ maxWidth: 600, margin: 'auto' }}>
         <h1 className={styles.title}>Choose a trip</h1>
         <Spacer />
         <Input
@@ -161,12 +162,14 @@ export default function Home() {
               <h2>Trip Description</h2>
               <p>{tripDescription}</p>
             </div>
+            <Spacer />
             <div>
-              <h3>Itinerary</h3>
+              <h2>Itinerary</h2>
               {itinerary.map((e) => (
                 <div key={e.name}>
-                  <h4>{e.name}</h4>
+                  <h6>{e.name}</h6>
                   <p>{e.description}</p>
+                  <div style={{ padding: 8 }} />
                 </div>
               ))}
             </div>
