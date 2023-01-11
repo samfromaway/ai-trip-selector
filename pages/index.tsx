@@ -1,8 +1,13 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Image from 'next/image';
+import { useEffect } from 'react';
+import { runCompletion } from '../lib/runCompletion';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  useEffect(() => {
+    runCompletion();
+  }, []);
   return (
     <div className={styles.container}>
       <Head>
@@ -65,5 +70,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  )
+  );
 }
