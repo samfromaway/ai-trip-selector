@@ -1,13 +1,55 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { useEffect } from 'react';
-import { runCompletion } from '../lib/runCompletion';
+import { useState } from 'react';
+import { getTrip, ItineraryItem } from '../lib/getTrip';
 import styles from '../styles/Home.module.css';
 
+const Dropdown = ({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string;
+  onChange;
+}) => {
+  return (
+    <select value={value} onChange={onChange}>
+      {options.map((e) => (
+        <option value={e} key={e}>
+          {e}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+const Spacer = () => {
+  return <div style={{ padding: 10 }} />;
+};
+
 export default function Home() {
-  useEffect(() => {
-    runCompletion();
-  }, []);
+  const [country, setCountry] = useState('');
+  const [travelStyle, setTravelStyle] = useState('');
+  const [duration, setDuration] = useState('');
+  const [age, setAge] = useState('');
+  const [tripDescription, setTripDescription] = useState('');
+  const [itinerary, setItinerary] = useState<ItineraryItem[]>([]);
+  const [queryState, setQueryState] = useState<
+    'error' | 'loading' | 'success' | 'none'
+  >('none');
+
+  const handleButtonClick = async () => {
+    setQueryState('loading');
+    const res = await getTrip({ country, travelStyle, age, duration });
+    if (res) {
+      setQueryState('success');
+      setTripDescription(res.tripDescription || '');
+      setItinerary(res.itinerary || []);
+      return;
+    }
+    setQueryState('error');
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,58 +59,54 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>Choose a trip</h1>
+        <Spacer />
+        <label>
+          Age
+          <input value={age} onChange={(e) => setAge(e.target.value)} />
+        </label>
+        <Spacer />
+        <label>
+          Duration of trip
+          <input
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+          />
+        </label>
+        <Spacer />
+        <Dropdown
+          options={['italy', 'china']}
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+        />
+        <Spacer />
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <Dropdown
+          options={['active', 'comfort']}
+          value={travelStyle}
+          onChange={(e) => setTravelStyle(e.target.value)}
+        />
+        <Spacer />
+        <button onClick={handleButtonClick}>Send</button>
+        {queryState === 'loading' && <p>Loading...</p>}
+        {queryState === 'success' && (
+          <div>
+            <div>
+              <h3>Trip Description</h3>
+              <p>{tripDescription}</p>
+            </div>
+            <div>
+              <h3>Itinerary</h3>
+              {itinerary.map((e) => (
+                <div key={e.name}>
+                  <h3>{e.name}</h3>
+                  <p>{e.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
     </div>
   );
 }
