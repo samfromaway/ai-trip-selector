@@ -65,6 +65,7 @@ const Input = ({
       <label htmlFor={label}>{label}</label>
       <div style={{ padding: 3 }} />
       <input
+        type="number"
         id={label}
         value={value}
         onChange={onChange}
