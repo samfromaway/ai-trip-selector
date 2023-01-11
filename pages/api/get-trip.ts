@@ -20,8 +20,9 @@ const makePromt = ({
   return `our client which is ${age} years old, wants to travel to ${country}.
 Our client wants to travel in a ${travelStyle} manner.
 Create a numbered itinerary for ${duration} days, with a convincing description less than 40 words in the "you" form.
+The destinations should be ordered by distance apart from each other.
 Then format your result like this:
-DayNr: City name - description |.
+DayNr: City name (distance to next city in the itinerary in kilo meters) - description |.
 
 then summarize the itinerary in a convincing enthusiastic text with less than 60 words.
 Prefix the itinerary-text with "Description" and add it to the end of the text.
