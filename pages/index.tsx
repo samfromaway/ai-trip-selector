@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { getTrip, ItineraryItem } from '../lib/getTrip';
 import styles from '../styles/Home.module.css';
 
+const countryOptions = ['', 'Italy', 'China', 'Peru', 'Colombia'];
+const travelStyleOptions = ['', 'Active', 'Comfort'];
+
 const Dropdown = ({
   options,
   value,
@@ -124,7 +127,9 @@ export default function Home() {
       </Head>
 
       <main className={styles.main} style={{ maxWidth: 600, margin: 'auto' }}>
-        <h1 className={styles.title}>Choose a trip</h1>
+        <h1 style={{ textAlign: 'center', fontSize: 50, margin: 0 }}>
+          Choose a trip
+        </h1>
         <Spacer />
         <Input
           value={age}
@@ -141,7 +146,7 @@ export default function Home() {
 
         <Spacer />
         <Dropdown
-          options={['', 'italy', 'china']}
+          options={countryOptions}
           value={country}
           onChange={(e) => setCountry(e.target.value)}
           label="Country"
@@ -149,7 +154,7 @@ export default function Home() {
         <Spacer />
 
         <Dropdown
-          options={['', 'active', 'comfort']}
+          options={travelStyleOptions}
           value={travelStyle}
           onChange={(e) => setTravelStyle(e.target.value)}
           label="Travel Style"
