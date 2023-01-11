@@ -11,7 +11,7 @@ const countryOptions = [
   'Colombia',
   'Ecuador',
   'Galapagos',
-  'Antarctica',
+  'Greenland',
 ];
 const travelStyleOptions = ['', 'Active', 'Comfort'];
 
