@@ -11,6 +11,11 @@ type TripResponse = {
   msg: any;
 };
 
+const makeApiDomain = () => {
+  const isServer = typeof window === 'undefined';
+
+  return isServer ? 'http://localhost:3000' : window.location.origin;
+};
 export async function getTrip({
   country,
   travelStyle,
@@ -24,7 +29,7 @@ export async function getTrip({
 }): Promise<TripResponse> {
   try {
     const res = await fetch(
-      `http://localhost:3000/api/get-trip?country=${country}&travelStyle=${travelStyle}&age=${age}&duration=${duration}`
+      `${makeApiDomain()}/api/get-trip?country=${country}&travelStyle=${travelStyle}&age=${age}&duration=${duration}`
     );
     const data: TripResponse = await res.json();
     return {
