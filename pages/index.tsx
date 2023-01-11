@@ -99,6 +99,13 @@ export default function Home() {
     }
     setQueryState('loading');
     const res = await getTrip({ country, travelStyle, age, duration });
+
+    if (res.state === 'error') {
+      setQueryState('error');
+      console.error(res.msg);
+
+      return;
+    }
     if (res) {
       setQueryState('success');
       setTripDescription(res.tripDescription || '');
@@ -155,6 +162,7 @@ export default function Home() {
         >
           Send
         </button>
+        {queryState === 'error' && <p>Error...</p>}
         {queryState === 'loading' && <p>Loading...</p>}
         {queryState === 'success' && (
           <div>

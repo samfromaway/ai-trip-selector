@@ -52,25 +52,36 @@ export default async function handler(
   if (typeof travelStyle !== 'string') return;
   if (typeof duration !== 'string') return;
 
-  const completion = await openai.createCompletion({
-    model: 'text-davinci-003',
-    max_tokens: 200,
-    prompt: makePromt({
-      country,
-      travelStyle,
-      age,
-      duration,
-    }),
-  });
-  const textResponse = completion.data.choices[0].text;
+  try {
+    const completion = await openai.createCompletion({
+      model: 'text-davinci-003',
+      max_tokens: 200,
+      prompt: makePromt({
+        country,
+        travelStyle,
+        age,
+        duration,
+      }),
+    });
+    const textResponse = completion.data.choices[0].text;
 
-  const text = formatTextResponse(textResponse);
+    const text = formatTextResponse(textResponse);
 
-  const itinerary = text?.itineraryArray.map((e) => makeItinerary(e));
-  const cleaneditinerary = itinerary.filter((e) => !!e.name);
+    const itinerary = text?.itineraryArray.map((e) => makeItinerary(e));
+    const cleaneditinerary = itinerary.filter((e) => !!e.name);
 
-  res.status(200).json({
-    tripDescription: text?.description,
-    itinerary: cleaneditinerary,
-  });
+    res.status(200).json({
+      tripDescription: text?.description,
+      itinerary: cleaneditinerary,
+      state: 'success',
+      msg: 'success',
+    });
+  } catch (error) {
+    res.status(500).json({
+      tripDescription: null,
+      itinerary: null,
+      state: 'error',
+      msg: error,
+    });
+  }
 }
