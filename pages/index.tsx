@@ -198,9 +198,11 @@ export default function Home() {
             <Spacer />
             <div>
               <h2>Itinerary</h2>
-              {itinerary.map((e) => (
+              {itinerary.map((e, i) => (
                 <div key={e.name}>
-                  <h6>{e.name}</h6>
+                  <h6>
+                    Day {i + 1}: {e.name}
+                  </h6>
                   <p>
                     <span style={{ color: 'grey' }}>
                       Distance to next place:
@@ -219,7 +221,7 @@ export default function Home() {
                     <span style={{ color: 'grey' }}>Description:</span>{' '}
                     {e.description}
                   </p>
-                  <div style={{ padding: 8 }} />
+                  <div style={{ padding: 12 }} />
                 </div>
               ))}
             </div>

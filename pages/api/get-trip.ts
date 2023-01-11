@@ -24,7 +24,7 @@ The destinations should be ordered by distance apart from each other.
 Then format your result like this:
 DayNr: dayNr, CityName: City name, Distance: distance to next city in the itinerary in kilo meters, TravelType: best way to travel from a selection of bus or boat or car or bike or flight, TripDesc: description |.
 
-then summarize the itinerary in a convincing enthusiastic text with less than 60 words.
+then summarize the itinerary in a convincing enthusiastic text with less than 30 words in the "you" form.
 Prefix the itinerary-text with "Description" and add it to the end of the text.
 `;
 };
@@ -53,6 +53,7 @@ const makeItinerary = (itineraryResponse: string) => {
 
   const nameResult = result?.[0]?.trim();
   const resultObj: any = convertToObject(nameResult);
+  console.log(nameResult);
 
   return {
     name: resultObj?.cityname,
@@ -75,7 +76,7 @@ export default async function handler(
   try {
     const completion = await openai.createCompletion({
       model: 'text-davinci-003',
-      max_tokens: 200,
+      max_tokens: 600,
       prompt: makePromt({
         country,
         travelStyle,
